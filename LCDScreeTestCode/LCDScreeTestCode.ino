@@ -17,5 +17,6 @@ void loop() {
 /*----- CIRCUIT NOTES ------
   - gray is ground
   - white to 5 volts
-  - orange and yellow to analog ports
+  - orange to SCL on digital side
+  - yellow to SDA on digital side
 */
