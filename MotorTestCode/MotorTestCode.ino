@@ -50,7 +50,7 @@ void driveMotor(boolean dir, int spd) {
     digitalWrite(in2Pin, HIGH);
   }
   // Control motor rotation speed
-  analogWrite(enable1Pin, constrain(spd, 0, 255));
+  analogWrite(enable1Pin, constrain(60, 0, 255));
 }
 
 /*---- NOTES FOR CIRCUIT HOOKUP-----
@@ -58,5 +58,4 @@ void driveMotor(boolean dir, int spd) {
 - Potentiometer data wire (blue) goes to analog port (A0 - A5)
 - 5 volts
 - L293D wires (green, white, white) should go to PWM ports, (I used ~11(left green), ~10(middle white), and ~9(right white))
-- Potentiometer needs soldered, tape is creating a loose connection
 */

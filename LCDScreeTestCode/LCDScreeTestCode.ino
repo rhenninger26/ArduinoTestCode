@@ -13,3 +13,9 @@ void loop() {
   lcd.print("Counter:");
   lcd.print(millis() / 1000);
 }
+
+/*----- CIRCUIT NOTES ------
+  - gray is ground
+  - white to 5 volts
+  - orange and yellow to analog ports
+*/
