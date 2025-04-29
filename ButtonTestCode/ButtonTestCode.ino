@@ -1,4 +1,4 @@
-int buttonPin = 12; // the number of the push button pin
+int buttonPin = 2; // the number of the push button pin
 int buttonState = HIGH; // Record button state, and initial the state to high level
 int lastButtonState = HIGH; // Record the button state of last detection
 long lastChangeTime = 0; // Record the time point for button state change

@@ -29,7 +29,7 @@ void setup()
   // initScreen();
   //showSplashScreen();
   Wire.begin();
-  radio.setFrequency(99.5); // pick your own frequency
+  radio.setFrequency(93.7); // pick your own frequency
   Serial.begin(9600);
 }
  
