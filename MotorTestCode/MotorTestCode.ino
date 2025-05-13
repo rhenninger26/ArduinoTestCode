@@ -1,6 +1,6 @@
-int in1Pin = 10; // Define L293D channel 1 pin
-int in2Pin = 9; // Define L293D channel 2 pin
-int enable1Pin = 11; // Define L293D enable 1 pin
+int in1Pin = 5; // Define L293D channel 1 pin
+int in2Pin = 3; // Define L293D channel 2 pin
+int enable1Pin = 6; // Define L293D enable 1 pin
 boolean rotationDir; // Define a variable to save the motor's rotation direction, true and false are represented by positive rotation and reverse rotation.
 int rotationSpeed; // Define a variable to save the motor rotation speed
 
@@ -15,42 +15,39 @@ void setup()
   Serial.begin(115200);
 }
 void loop() {
-  int potenVal = analogRead(A0); // Convert the voltage of rotary potentiometer into digital
-  Serial.println(String(potenVal));
+    int potenVal = analogRead(A3); // Read potentiometer value
+    Serial.println(String(potenVal));
 
-  // Compare the number with value 512, if more than 512, clockwise rotates, otherwise, counterclockwise rotates
-  rotationSpeed = potenVal - 512;
+    // Determine rotation direction
+    if (potenVal > 512) {
+        rotationDir = true; // Clockwise
+        rotationSpeed = potenVal - 512; // Speed based on deviation from center
+    }
+    else {
+        rotationDir = false; // Counterclockwise
+        rotationSpeed = 512 - potenVal; // Speed based on deviation from center
+    }
 
-  if (potenVal > 512)
-  {
-    rotationDir = true;
-  }
-  else
-  {
-    rotationDir = false;
-  }
+    // Map the speed to a usable PWM range
+    int pwmSpeed = map(rotationSpeed, 0, 512, 0, 255);
 
-  // Calculate the motor speed, the far number of deviation from the middle value 512, the faster the control speed will be
-  rotationSpeed = 150;
-
-  // Control the steering and speed of the motor
-  driveMotor(rotationDir,map(rotationSpeed, 0, 512, 0, 255));
+    // Drive the motor
+    driveMotor(rotationDir, pwmSpeed);
 }
 
 void driveMotor(boolean dir, int spd) {
-  // Control motor rotation direction
-  if (dir) 
-  {
-    digitalWrite(in1Pin, HIGH);
-    digitalWrite(in2Pin, LOW);
-  }
-  else 
-  {
-    digitalWrite(in1Pin, LOW);
-    digitalWrite(in2Pin, HIGH);
-  }
-  // Control motor rotation speed
-  analogWrite(enable1Pin, constrain(60, 0, 255));
+    // Control motor rotation direction
+    if (dir) {
+        digitalWrite(in1Pin, HIGH);
+        digitalWrite(in2Pin, LOW);
+    }
+    else {
+        digitalWrite(in1Pin, LOW);
+        digitalWrite(in2Pin, HIGH);
+    }
+
+    // Control motor rotation speed
+    analogWrite(enable1Pin, constrain(spd, 0, 255)); // Use the mapped speed
 }
 
 /*---- NOTES FOR CIRCUIT HOOKUP-----

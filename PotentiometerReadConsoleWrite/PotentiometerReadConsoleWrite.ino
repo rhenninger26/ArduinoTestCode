@@ -1,4 +1,4 @@
-int potPin = A0; // Potentiometer output connected to analog pin 0
+int potPin = A3; // Potentiometer output connected to analog pin 0
 void setup() {
   Serial.begin(9600); // port to print to the serial monitor
 }

@@ -18,77 +18,158 @@ void loop()
 {
     // ---------- WRITE TEST CODE ------------
     // Search for a card
-    if (rfid.findCard(PICC_REQIDL, str) == MI_OK) {
-        Serial.println("Card detected!");
+    // if (rfid.findCard(PICC_REQIDL, str) == MI_OK) {
+    //     Serial.println("Card detected!");
 
-        // Anti-collision detection to get the card's serial number
+    //     // Anti-collision detection to get the card's serial number
+    //     if (rfid.anticoll(str) == MI_OK) {
+    //         Serial.print("Card UID: ");
+    //         for (int i = 0; i < 4; i++) {
+    //             Serial.print(0x0F & (str[i] >> 4), HEX);
+    //             Serial.print(0x0F & str[i], HEX);
+    //         }
+    //         Serial.println("");
+
+    //         // Authenticate block 4 (or any writable block)
+    //         if (rfid.auth(PICC_AUTHENT1A, 16, key, str) == MI_OK) {
+    //             Serial.println("Authentication successful!");
+
+    //             // Data to write (16 bytes max for a block)
+    //             unsigned char dataBlock[16] = "SpotifyURI";
+
+    //             // Write data to block 4
+    //             if (rfid.write(4, dataBlock) == MI_OK) {
+    //                 Serial.println("Data written successfully!");
+
+    //                 // Read back the data to verify
+    //                 unsigned char readBlock[16];
+    //                 if (rfid.read(4, readBlock) == MI_OK) {
+    //                     Serial.print("Data read from block 4: ");
+    //                     for (int i = 0; i < 16; i++) {
+    //                         Serial.print((char)readBlock[i]);
+    //                     }
+    //                     Serial.println("");
+    //                 }
+    //                 else {
+    //                     Serial.println("Failed to read back data.");
+    //                 }
+    //             }
+    //             else {
+    //                 Serial.println("Failed to write data.");
+    //             }
+
+    //             //rfid.stopCrypto1(); // Stop encryption
+    //         }
+    //         else {
+    //             Serial.println("Authentication failed.");
+    //         }
+    //     }
+    //     rfid.halt(); // Command the card to enter sleeping state
+    // }
+
+    //---------- READ TEST CODE ------------
+    if (rfid.findCard(PICC_REQIDL, str) == MI_OK)
+    {
+        Serial.println("Find the card!");
+        // Show card type
+        ShowCardType(str);
+
         if (rfid.anticoll(str) == MI_OK) {
-            Serial.print("Card UID: ");
-            for (int i = 0; i < 4; i++) {
+            Serial.print("The card's number is : ");
+            for (int i = 0; i < 4; i++)
+            {
                 Serial.print(0x0F & (str[i] >> 4), HEX);
                 Serial.print(0x0F & str[i], HEX);
             }
             Serial.println("");
 
-            // Authenticate block 4 (or any writable block)
-            if (rfid.auth(PICC_AUTHENT1A, 16, key, str) == MI_OK) {
-                Serial.println("Authentication successful!");
+            // For NTAG215 - attempt to read all data blocks
+            unsigned char readBlock[16];
+            Serial.println("Reading all available data blocks...");
 
-                // Data to write (16 bytes max for a block)
-                unsigned char dataBlock[16] = "SpotifyURI";
+            // Create buffers to store all the data
+            unsigned char allData[256]; // More than enough for 84 bytes
+            int totalBytesRead = 0;
+            bool readFailed = false;
 
-                // Write data to block 4
-                if (rfid.write(4, dataBlock) == MI_OK) {
-                    Serial.println("Data written successfully!");
+            // Try reading more blocks - NTAG215 has 135 pages of 4 bytes each
+            // We'll try reading blocks 4 through 40 (should cover your 84 bytes)
+            for (int block = 4; block <= 30; block++) {
+                if (rfid.read(block, readBlock) == MI_OK) {
+                    Serial.print("Block ");
+                    Serial.print(block);
+                    Serial.print(": ");
 
-                    // Read back the data to verify
-                    unsigned char readBlock[16];
-                    if (rfid.read(4, readBlock) == MI_OK) {
-                        Serial.print("Data read from block 4: ");
-                        for (int i = 0; i < 16; i++) {
+                    // Display as HEX and ASCII
+                    for (int i = 0; i < 16; i++) {
+                        // Store the data
+                        if (totalBytesRead < 256) {
+                            allData[totalBytesRead++] = readBlock[i];
+                        }
+
+                        // Print HEX
+                        if (readBlock[i] < 0x10) Serial.print("0");
+                        Serial.print(readBlock[i], HEX);
+                        Serial.print(" ");
+                    }
+
+                    Serial.print("  |  ");
+
+                    // ASCII representation
+                    for (int i = 0; i < 16; i++) {
+                        if (readBlock[i] >= 32 && readBlock[i] <= 126) {
                             Serial.print((char)readBlock[i]);
                         }
-                        Serial.println("");
+                        else {
+                            Serial.print(".");
+                        }
                     }
-                    else {
-                        Serial.println("Failed to read back data.");
-                    }
+                    Serial.println();
                 }
                 else {
-                    Serial.println("Failed to write data.");
+                    Serial.print("Failed to read block ");
+                    Serial.println(block);
+                    readFailed = true;
+                    break; // Stop if reading fails
                 }
 
-                //rfid.stopCrypto1(); // Stop encryption
+                // Check if we've read enough data (at least 84 bytes)
+                if (totalBytesRead >= 84 && readFailed) {
+                    break;
+                }
             }
-            else {
-                Serial.println("Authentication failed.");
-            }
-        }
-        rfid.halt(); // Command the card to enter sleeping state
-    }
 
-    // ---------- READ TEST CODE ------------
-    ////Search card, return card types
-    //if (rfid.findCard(PICC_REQIDL, str) == MI_OK) 
-    //{
-    //  Serial.println("Find the card!");
-    //  // Show card type
-    //  ShowCardType(str);
-    //  //Anti-collision detection, read card serial number
-    //  if (rfid.anticoll(str) == MI_OK) {
-    //    Serial.print("The card's number is : ");
-    //  //Display card serial number
-    //    for (int i = 0; i < 4; i++) 
-    //    {
-    //      Serial.print(0x0F & (str[i] >> 4), HEX);
-    //      Serial.print(0x0F & str[i], HEX);
-    //    }
-    //    Serial.println("");
-    //}
-    //  //card selection (lock card to prevent redundant read, removing the line will make the sketch read cards continually)
-    //  rfid.selectTag(str);
-    //}
-    //rfid.halt(); // command the card to enter sleeping state
+            // Display summary of all data
+            Serial.println("\n---------- COMPLETE DATA SUMMARY ----------");
+            Serial.print("Total bytes read: ");
+            Serial.println(totalBytesRead);
+
+            // Show all data in one continuous string (ASCII)
+            Serial.println("All data (ASCII):");
+            for (int i = 0; i < totalBytesRead; i++) {
+                if (allData[i] >= 32 && allData[i] <= 126) {
+                    Serial.print((char)allData[i]);
+                }
+                else {
+                    Serial.print(".");
+                }
+            }
+            Serial.println("\n");
+
+            // Show all data in hexadecimal
+            Serial.println("All data (HEX):");
+            for (int i = 0; i < totalBytesRead; i++) {
+                if (allData[i] < 0x10) Serial.print("0");
+                Serial.print(allData[i], HEX);
+                Serial.print(" ");
+                if ((i + 1) % 16 == 0) Serial.println();
+            }
+            Serial.println("\n");
+
+            rfid.selectTag(str);
+        }
+    }
+    rfid.halt(); // command the card to enter sleeping state
 }
 
 void ShowCardType(unsigned char* type)
