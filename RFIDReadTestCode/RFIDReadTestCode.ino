@@ -83,42 +83,53 @@ void loop()
             }
             Serial.println("");
 
-            // For NTAG215 - attempt to read all data blocks
-            unsigned char readBlock[16];
-            Serial.println("Reading all available data blocks...");
-
-            // Create buffers to store all the data
-            unsigned char allData[256]; // More than enough for 84 bytes
+            // For NTAG215, each page is 4 bytes, and there are 135 pages (0-134)
+            unsigned char readPage[4];
+            unsigned char allData[256];
             int totalBytesRead = 0;
             bool readFailed = false;
 
-            // Try reading more blocks - NTAG215 has 135 pages of 4 bytes each
-            // We'll try reading blocks 4 through 40 (should cover your 84 bytes)
-            for (int block = 4; block <= 30; block++) {
-                if (rfid.read(block, readBlock) == MI_OK) {
-                    Serial.print("Block ");
-                    Serial.print(block);
+            // Read pages 4 to 30 (adjust as needed)
+            for (int page = 4; page <= 30; page++) {
+                if (rfid.read(page, readPage) == MI_OK) {
+                    Serial.print("Page ");
+                    Serial.print(page);
                     Serial.print(": ");
-
-                    // Display as HEX and ASCII
-                    for (int i = 0; i < 16; i++) {
-                        // Store the data
+                    for (int i = 0; i < 4; i++) {
                         if (totalBytesRead < 256) {
-                            allData[totalBytesRead++] = readBlock[i];
+                            allData[totalBytesRead++] = readPage[i];
                         }
-
-                        // Print HEX
-                        if (readBlock[i] < 0x10) Serial.print("0");
-                        Serial.print(readBlock[i], HEX);
+                        if (readPage[i] < 0x10) Serial.print("0");
+                        Serial.print(readPage[i], HEX);
                         Serial.print(" ");
                     }
-
                     Serial.print("  |  ");
+                    for (int i = 0; i < 4; i++) {
+                        // Buffer to hold the extracted URL
+                        char url[200]; // Make sure this is large enough for your URLs
+                        int urlIndex = 0;
+                        bool urlStarted = false;
 
-                    // ASCII representation
-                    for (int i = 0; i < 16; i++) {
-                        if (readBlock[i] >= 32 && readBlock[i] <= 126) {
-                            Serial.print((char)readBlock[i]);
+                        // Find the start of the URL ("http")
+                        for (int i = 0; i < totalBytesRead - 4; i++) {
+                            if (allData[i] == 'h' && allData[i+1] == 't' && allData[i+2] == 't' && allData[i+3] == 'p') {
+                                // Copy from here until a non-printable or NDEF terminator (0xFE)
+                                for (int j = i; j < totalBytesRead && urlIndex < sizeof(url) - 1; j++) {
+                                    if (allData[j] < 32 || allData[j] > 126 || allData[j] == 0xFE) {
+                                        break;
+                                    }
+                                    url[urlIndex++] = (char)allData[j];
+                                }
+                                break;
+                            }
+                        }
+                        url[urlIndex] = '\0'; // Null-terminate the string
+
+                        // Print the extracted URL
+                        Serial.print("Extracted URL: ");
+                        Serial.println(url);
+                        if (readPage[i] >= 32 && readPage[i] <= 126) {
+                            Serial.print((char)readPage[i]);
                         }
                         else {
                             Serial.print(".");
@@ -127,13 +138,11 @@ void loop()
                     Serial.println();
                 }
                 else {
-                    Serial.print("Failed to read block ");
-                    Serial.println(block);
+                    Serial.print("Failed to read page ");
+                    Serial.println(page);
                     readFailed = true;
-                    break; // Stop if reading fails
+                    break;
                 }
-
-                // Check if we've read enough data (at least 84 bytes)
                 if (totalBytesRead >= 84 && readFailed) {
                     break;
                 }
@@ -146,27 +155,39 @@ void loop()
 
             // Show all data in one continuous string (ASCII)
             Serial.println("All data (ASCII):");
-            for (int i = 0; i < totalBytesRead; i++) {
-                if (allData[i] >= 32 && allData[i] <= 126) {
+            // Extract and print only the URL from the NFC data
+            Serial.println("Extracted URL:");
+            bool urlStarted = false;
+            int urlStart = -1;
+            int urlEnd = -1;
+
+            // Look for "http" or "https" in the data
+            for (int i = 0; i < totalBytesRead - 4; i++) {
+                if ((allData[i] == 'h' && allData[i + 1] == 't' && allData[i + 2] == 't' && allData[i + 3] == 'p')) {
+                    urlStart = i;
+                    urlStarted = true;
+                    break;
+                }
+            }
+            if (urlStarted) {
+                // Find the end of the URL (stop at first non-printable ASCII or 0xFE NDEF terminator)
+                for (int i = urlStart; i < totalBytesRead; i++) {
+                    if (allData[i] < 32 || allData[i] > 126 || allData[i] == 0xFE) {
+                        urlEnd = i;
+                        break;
+                    }
+                }
+                if (urlEnd == -1) urlEnd = totalBytesRead;
+
+                // Print the URL
+                for (int i = urlStart; i < urlEnd; i++) {
                     Serial.print((char)allData[i]);
                 }
-                else {
-                    Serial.print(".");
-                }
+                Serial.println();
             }
-            Serial.println("\n");
-
-            // Show all data in hexadecimal
-            Serial.println("All data (HEX):");
-            for (int i = 0; i < totalBytesRead; i++) {
-                if (allData[i] < 0x10) Serial.print("0");
-                Serial.print(allData[i], HEX);
-                Serial.print(" ");
-                if ((i + 1) % 16 == 0) Serial.println();
+            else {
+                Serial.println("No URL found in NFC data.");
             }
-            Serial.println("\n");
-
-            rfid.selectTag(str);
         }
     }
     rfid.halt(); // command the card to enter sleeping state
