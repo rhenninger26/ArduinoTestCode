@@ -1,118 +1,117 @@
 #include <SPI.h>
 #include <RFID.h>
+#include <ArduinoBLE.h>
+
+// BLE Service
+BLEService messageService("19B10000-E8F2-537E-4F6C-D104768A1214"); // Custom BLE Service UUID
+
+// Connection notification characteristic - will be used to trigger Tasker
+BLEStringCharacteristic connectionNotifyCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1214", // New UUID for connection notification
+    BLERead | BLENotify, 300);
+
 //D10:pin of card reader SDA. D9:pin of card reader RST
 RFID rfid(10, 9);
 unsigned char status;
 unsigned char str[MAX_LEN]; //MAX_LEN is 16: size of the array
 unsigned char key[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }; // Default key for authentication
 
+// Store the last read URL
+char lastReadUrl[300] = "";
+bool hasStoredUrl = false;
+
 void setup()
 {
-  Serial.begin(9600);
-  SPI.begin();
-  rfid.init(); //initialization
-  //Serial.println("Please put the card to the induction area...");
-  Serial.println("Place the card on the reader to test writing...");
+    Serial.begin(9600);
+    SPI.begin();
+    rfid.init(); //initialization
+
+    while (!Serial);
+    // Initialize BLE hardware
+    if (!BLE.begin()) {
+        Serial.println("Starting BLE failed!");
+        while (1);
+    }
+
+    // Set advertised local name and service UUID
+    BLE.setLocalName("ArduinoR4");
+    BLE.setAdvertisedService(messageService);
+
+    // Add the notification characteristic to the service
+    messageService.addCharacteristic(connectionNotifyCharacteristic);
+
+    // Add service
+    BLE.addService(messageService);
+
+    // Start advertising
+    BLE.advertise();
+
+    Serial.println("Bluetooth device active, waiting for connections...");
 }
-void loop()
-{
-    // ---------- WRITE TEST CODE ------------
-    // Search for a card
-    // if (rfid.findCard(PICC_REQIDL, str) == MI_OK) {
-    //     Serial.println("Card detected!");
 
-    //     // Anti-collision detection to get the card's serial number
-    //     if (rfid.anticoll(str) == MI_OK) {
-    //         Serial.print("Card UID: ");
-    //         for (int i = 0; i < 4; i++) {
-    //             Serial.print(0x0F & (str[i] >> 4), HEX);
-    //             Serial.print(0x0F & str[i], HEX);
-    //         }
-    //         Serial.println("");
+void loop() {
+    // Listen for BLE peripherals to connect
+    BLEDevice central = BLE.central();
 
-    //         // Authenticate block 4 (or any writable block)
-    //         if (rfid.auth(PICC_AUTHENT1A, 16, key, str) == MI_OK) {
-    //             Serial.println("Authentication successful!");
+    // If a central is connected to peripheral
+    if (central) {
+        Serial.print("Connected to central: ");
+        Serial.println(central.address());
 
-    //             // Data to write (16 bytes max for a block)
-    //             unsigned char dataBlock[16] = "SpotifyURI";
+        // Send connection notification with URL if available
+        if (hasStoredUrl) {
+            connectionNotifyCharacteristic.writeValue(lastReadUrl);
+            Serial.println("Sent URL notification upon connection");
+        }
+        else {
+            connectionNotifyCharacteristic.writeValue("No URL scanned yet");
+        }
 
-    //             // Write data to block 4
-    //             if (rfid.write(4, dataBlock) == MI_OK) {
-    //                 Serial.println("Data written successfully!");
+        static bool urlPrinted = false;
 
-    //                 // Read back the data to verify
-    //                 unsigned char readBlock[16];
-    //                 if (rfid.read(4, readBlock) == MI_OK) {
-    //                     Serial.print("Data read from block 4: ");
-    //                     for (int i = 0; i < 16; i++) {
-    //                         Serial.print((char)readBlock[i]);
-    //                     }
-    //                     Serial.println("");
-    //                 }
-    //                 else {
-    //                     Serial.println("Failed to read back data.");
-    //                 }
-    //             }
-    //             else {
-    //                 Serial.println("Failed to write data.");
-    //             }
+        // While connected
+        while (central.connected()) {
+            if (rfid.findCard(PICC_REQIDL, str) == MI_OK) {
+                if (!urlPrinted) {
+                    Serial.println("Find the card!");
+                    ShowCardType(str);
 
-    //             //rfid.stopCrypto1(); // Stop encryption
-    //         }
-    //         else {
-    //             Serial.println("Authentication failed.");
-    //         }
-    //     }
-    //     rfid.halt(); // Command the card to enter sleeping state
-    // }
-
-    //---------- READ TEST CODE ------------
-    if (rfid.findCard(PICC_REQIDL, str) == MI_OK)
-    {
-        Serial.println("Find the card!");
-        // Show card type
-        ShowCardType(str);
-
-        if (rfid.anticoll(str) == MI_OK) {
-            Serial.print("The card's number is : ");
-            for (int i = 0; i < 4; i++)
-            {
-                Serial.print(0x0F & (str[i] >> 4), HEX);
-                Serial.print(0x0F & str[i], HEX);
-            }
-            Serial.println("");
-
-            // For NTAG215, each page is 4 bytes, and there are 135 pages (0-134)
-            unsigned char readPage[4];
-            unsigned char allData[256];
-            int totalBytesRead = 0;
-            bool readFailed = false;
-
-            // Read pages 4 to 30 (adjust as needed)
-            for (int page = 4; page <= 30; page++) {
-                if (rfid.read(page, readPage) == MI_OK) {
-                    Serial.print("Page ");
-                    Serial.print(page);
-                    Serial.print(": ");
-                    for (int i = 0; i < 4; i++) {
-                        if (totalBytesRead < 256) {
-                            allData[totalBytesRead++] = readPage[i];
+                    if (rfid.anticoll(str) == MI_OK) {
+                        Serial.print("The card's number is : ");
+                        for (int i = 0; i < 4; i++) {
+                            Serial.print(0x0F & (str[i] >> 4), HEX);
+                            Serial.print(0x0F & str[i], HEX);
                         }
-                        if (readPage[i] < 0x10) Serial.print("0");
-                        Serial.print(readPage[i], HEX);
-                        Serial.print(" ");
-                    }
-                    Serial.print("  |  ");
-                    for (int i = 0; i < 4; i++) {
-                        // Buffer to hold the extracted URL
-                        char url[200]; // Make sure this is large enough for your URLs
+                        Serial.println("");
+
+                        // For NTAG215, each page is 4 bytes, and there are 135 pages (0-134)
+                        unsigned char readPage[4];
+                        unsigned char allData[256];
+                        int totalBytesRead = 0;
+                        bool readFailed = false;
+
+                        // Read pages 4 to 30 (adjust as needed)
+                        for (int page = 4; page <= 30; page++) {
+                            if (rfid.read(page, readPage) == MI_OK) {
+                                for (int i = 0; i < 4; i++) {
+                                    if (totalBytesRead < 256) {
+                                        allData[totalBytesRead++] = readPage[i];
+                                    }
+                                }
+                            }
+                            else {
+                                readFailed = true;
+                                break;
+                            }
+                        }
+
+                        // Extract and print only the URL from the NFC data
+                        char url[300];
                         int urlIndex = 0;
-                        bool urlStarted = false;
+                        bool urlFound = false;
 
                         // Find the start of the URL ("http")
                         for (int i = 0; i < totalBytesRead - 4; i++) {
-                            if (allData[i] == 'h' && allData[i+1] == 't' && allData[i+2] == 't' && allData[i+3] == 'p') {
+                            if (allData[i] == 'h' && allData[i + 1] == 't' && allData[i + 2] == 't' && allData[i + 3] == 'p') {
                                 // Copy from here until a non-printable or NDEF terminator (0xFE)
                                 for (int j = i; j < totalBytesRead && urlIndex < sizeof(url) - 1; j++) {
                                     if (allData[j] < 32 || allData[j] > 126 || allData[j] == 0xFE) {
@@ -120,77 +119,43 @@ void loop()
                                     }
                                     url[urlIndex++] = (char)allData[j];
                                 }
+                                urlFound = true;
                                 break;
                             }
                         }
                         url[urlIndex] = '\0'; // Null-terminate the string
 
-                        // Print the extracted URL
-                        Serial.print("Extracted URL: ");
-                        Serial.println(url);
-                        if (readPage[i] >= 32 && readPage[i] <= 126) {
-                            Serial.print((char)readPage[i]);
+                        if (urlFound) {
+                            Serial.print("Extracted URL: ");
+                            Serial.println(url);
+
+                            // Store the URL for future connections
+                            strncpy(lastReadUrl, url, sizeof(lastReadUrl) - 1);
+                            lastReadUrl[sizeof(lastReadUrl) - 1] = '\0'; // Ensure null-termination
+                            hasStoredUrl = true;
+
+                            // // Send the URL via Bluetooth
+                            // messageCharacteristic.writeValue(url);
+                            // Also update the connection notification characteristic
+                            connectionNotifyCharacteristic.writeValue(url);
+                            Serial.println("Sent URL via Bluetooth");
                         }
                         else {
-                            Serial.print(".");
+                            Serial.println("No URL found in NFC data.");
                         }
-                    }
-                    Serial.println();
-                }
-                else {
-                    Serial.print("Failed to read page ");
-                    Serial.println(page);
-                    readFailed = true;
-                    break;
-                }
-                if (totalBytesRead >= 84 && readFailed) {
-                    break;
-                }
-            }
-
-            // Display summary of all data
-            Serial.println("\n---------- COMPLETE DATA SUMMARY ----------");
-            Serial.print("Total bytes read: ");
-            Serial.println(totalBytesRead);
-
-            // Show all data in one continuous string (ASCII)
-            Serial.println("All data (ASCII):");
-            // Extract and print only the URL from the NFC data
-            Serial.println("Extracted URL:");
-            bool urlStarted = false;
-            int urlStart = -1;
-            int urlEnd = -1;
-
-            // Look for "http" or "https" in the data
-            for (int i = 0; i < totalBytesRead - 4; i++) {
-                if ((allData[i] == 'h' && allData[i + 1] == 't' && allData[i + 2] == 't' && allData[i + 3] == 'p')) {
-                    urlStart = i;
-                    urlStarted = true;
-                    break;
-                }
-            }
-            if (urlStarted) {
-                // Find the end of the URL (stop at first non-printable ASCII or 0xFE NDEF terminator)
-                for (int i = urlStart; i < totalBytesRead; i++) {
-                    if (allData[i] < 32 || allData[i] > 126 || allData[i] == 0xFE) {
-                        urlEnd = i;
-                        break;
+                        urlPrinted = true;
                     }
                 }
-                if (urlEnd == -1) urlEnd = totalBytesRead;
-
-                // Print the URL
-                for (int i = urlStart; i < urlEnd; i++) {
-                    Serial.print((char)allData[i]);
-                }
-                Serial.println();
             }
             else {
-                Serial.println("No URL found in NFC data.");
+                urlPrinted = false; // Reset flag when no card is present
             }
+            rfid.halt(); // Command the card to enter sleeping state
         }
+
+        Serial.print("Disconnected from central: ");
+        Serial.println(central.address());
     }
-    rfid.halt(); // command the card to enter sleeping state
 }
 
 void ShowCardType(unsigned char* type)
@@ -216,11 +181,3 @@ void ShowCardType(unsigned char* type)
     else
         Serial.println("Unknown");
 }
-
-/* ------ EXTRA INFO -------
-- White card reads from <= 1.5"
-- Blue chip reads from <= 1.5"
-- 3.3 volts
-- 2 digital pins 
-- 3 pwm pins
-*/

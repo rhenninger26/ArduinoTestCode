@@ -1,0 +1,145 @@
+11:19:12.300 -> Find the card!
+11:19:12.300 -> Card type: Raw type bytes: 44 0
+11:19:12.300 -> MF-UltraLight
+11:19:12.300 -> The card's number is : 88047BE6
+11:19:12.376 -> Page 4: 03 54 D1 01   |  Extracted URL: 
+11:19:12.376 -> .Extracted URL: 
+11:19:12.376 -> TExtracted URL: 
+11:19:12.376 -> .Extracted URL: 
+11:19:12.376 -> .
+11:19:12.500 -> Page 5: 50 55 00 68   |  Extracted URL: 
+11:19:12.500 -> PExtracted URL: 
+11:19:12.500 -> UExtracted URL: 
+11:19:12.500 -> .Extracted URL: 
+11:19:12.500 -> h
+11:19:12.617 -> Page 6: 74 74 70 73   |  Extracted URL: https
+11:19:12.617 -> tExtracted URL: https
+11:19:12.617 -> tExtracted URL: https
+11:19:12.617 -> pExtracted URL: https
+11:19:12.617 -> s
+11:19:12.734 -> Page 7: 3A 2F 2F 6F   |  Extracted URL: https://o
+11:19:12.734 -> :Extracted URL: https://o
+11:19:12.734 -> /Extracted URL: https://o
+11:19:12.734 -> /Extracted URL: https://o
+11:19:12.771 -> o
+11:19:12.884 -> Page 8: 70 65 6E 2E   |  Extracted URL: https://open.
+11:19:12.884 -> pExtracted URL: https://open.
+11:19:12.884 -> eExtracted URL: https://open.
+11:19:12.884 -> nExtracted URL: https://open.
+11:19:12.921 -> .
+11:19:13.068 -> Page 9: 73 70 6F 74   |  Extracted URL: https://open.spot
+11:19:13.068 -> sExtracted URL: https://open.spot
+11:19:13.068 -> pExtracted URL: https://open.spot
+11:19:13.105 -> oExtracted URL: https://open.spot
+11:19:13.105 -> t
+11:19:13.233 -> Page 10: 69 66 79 2E   |  Extracted URL: https://open.spotify.
+11:19:13.233 -> iExtracted URL: https://open.spotify.
+11:19:13.233 -> fExtracted URL: https://open.spotify.
+11:19:13.318 -> yExtracted URL: https://open.spotify.
+11:19:13.318 -> .
+11:19:13.435 -> Page 11: 63 6F 6D 2F   |  Extracted URL: https://open.spotify.com/
+11:19:13.435 -> cExtracted URL: https://open.spotify.com/
+11:19:13.435 -> oExtracted URL: https://open.spotify.com/
+11:19:13.503 -> mExtracted URL: https://open.spotify.com/
+11:19:13.503 -> /
+11:19:13.616 -> Page 12: 74 72 61 63   |  Extracted URL: https://open.spotify.com/trac
+11:19:13.616 -> tExtracted URL: https://open.spotify.com/trac
+11:19:13.616 -> rExtracted URL: https://open.spotify.com/trac
+11:19:13.733 -> aExtracted URL: https://open.spotify.com/trac
+11:19:13.733 -> c
+11:19:13.851 -> Page 13: 6B 2F 32 5A   |  Extracted URL: https://open.spotify.com/track/2Z
+11:19:13.851 -> kExtracted URL: https://open.spotify.com/track/2Z
+11:19:13.968 -> /Extracted URL: https://open.spotify.com/track/2Z
+11:19:13.968 -> 2Extracted URL: https://open.spotify.com/track/2Z
+11:19:13.968 -> Z
+11:19:14.119 -> Page 14: 46 78 5A 34   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4
+11:19:14.119 -> FExtracted URL: https://open.spotify.com/track/2ZFxZ4
+11:19:14.222 -> xExtracted URL: https://open.spotify.com/track/2ZFxZ4
+11:19:14.222 -> ZExtracted URL: https://open.spotify.com/track/2ZFxZ4
+11:19:14.222 -> 4
+11:19:14.368 -> Page 15: 51 4E 69 63   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNic
+11:19:14.368 -> QExtracted URL: https://open.spotify.com/track/2ZFxZ4QNic
+11:19:14.472 -> NExtracted URL: https://open.spotify.com/track/2ZFxZ4QNic
+11:19:14.472 -> iExtracted URL: https://open.spotify.com/track/2ZFxZ4QNic
+11:19:14.518 -> c
+11:19:14.634 -> Page 16: 69 4D 68 76   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhv
+11:19:14.634 -> iExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhv
+11:19:14.784 -> MExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhv
+11:19:14.784 -> hExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhv
+11:19:14.821 -> v
+11:19:14.934 -> Page 17: 4A 56 32 47   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2G
+11:19:14.934 -> JExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2G
+11:19:15.067 -> VExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2G
+11:19:15.067 -> 2Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2G
+11:19:15.104 -> G
+11:19:15.229 -> Page 18: 6A 4B 57 4C   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL
+11:19:15.229 -> jExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL
+11:19:15.370 -> KExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL
+11:19:15.370 -> WExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL
+11:19:15.434 -> L
+11:19:15.582 -> Page 19: 3F 73 69 3D   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=
+11:19:15.582 -> ?Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=
+11:19:15.700 -> sExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=
+11:19:15.816 -> iExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=
+11:19:15.816 -> =
+11:19:15.933 -> Page 20: 30 32 4B 4A   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJ
+11:19:15.933 -> 0Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJ
+11:19:16.048 -> 2Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJ
+11:19:16.167 -> KExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJ
+11:19:16.167 -> J
+11:19:16.268 -> Page 21: 74 44 42 61   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBa
+11:19:16.268 -> tExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBa
+11:19:16.417 -> DExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBa
+11:19:16.532 -> BExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBa
+11:19:16.532 -> a
+11:19:16.648 -> Page 22: 52 4F 71 43   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqC
+11:19:16.649 -> RExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqC
+11:19:16.768 -> OExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqC
+11:19:16.918 -> qExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqC
+11:19:16.918 -> C
+11:19:17.034 -> Page 23: 4D 6A 32 42   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2B
+11:19:17.034 -> MExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2B
+11:19:17.183 -> jExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2B
+11:19:17.303 -> 2Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2B
+11:19:17.351 -> B
+11:19:17.451 -> Page 24: 46 56 78 68   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxh
+11:19:17.601 -> FExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxh
+11:19:17.601 -> VExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxh
+11:19:17.701 -> xExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxh
+11:19:17.770 -> h
+11:19:17.884 -> Page 25: 41 51 FE 00   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:18.018 -> AExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:18.018 -> QExtracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:18.122 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:18.201 -> .
+11:19:18.318 -> Page 26: 00 00 00 00   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:18.433 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:18.433 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:18.572 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:18.650 -> .
+11:19:18.752 -> Page 27: 00 00 00 00   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:18.882 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:18.882 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:19.000 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:19.070 -> .
+11:19:19.180 -> Page 28: 00 00 00 00   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:19.316 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:19.316 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:19.434 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:19.518 -> .
+11:19:19.633 -> Page 29: 00 00 00 00   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:19.751 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:19.751 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:19.865 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:19.949 -> .
+11:19:20.066 -> Page 30: 00 00 00 00   |  Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:20.202 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:20.202 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:20.301 -> .Extracted URL: https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
+11:19:20.449 -> .
+11:19:20.449 -> 
+11:19:20.449 -> ---------- COMPLETE DATA SUMMARY ----------
+11:19:20.449 -> Total bytes read: 108
+11:19:20.566 -> All data (ASCII):
+11:19:20.566 -> Extracted URL:
+11:19:20.566 -> https://open.spotify.com/track/2ZFxZ4QNiciMhvJV2GjKWL?si=02KJtDBaROqCMj2BFVxhAQ
